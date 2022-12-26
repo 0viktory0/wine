@@ -6,18 +6,10 @@ import pandas
 import collections
 
 
-file_path = 'wine.xlsx'
-
-env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml']))
-template = env.get_template('template.html')
-
-
 def define_data():
     now = datetime.date.today()
-    time_data = now.year - 1920
-    return time_data
+    age_of_the_winery = now.year - DATE_OF_FOUNDATION
+    return age_of_the_winery
 
 
 def write_years(num):
@@ -41,8 +33,19 @@ def get_inf_wine_file(file_path):
     return wine_card
 
 
+
+if __name__ == '__main__':
+
+file_path = 'wine.xlsx'
+DATE_OF_FOUNDATION = 1920
+
+env = Environment(
+    loader=FileSystemLoader('.'),
+    autoescape=select_autoescape(['html', 'xml']))
+template = env.get_template('template.html')
+
 rendered_page = template.render(
-    time=write_years(define_data()),
+    time_passed=write_years(define_data()),
     wine_table=get_inf_wine_file(file_path),)
 
 
@@ -51,7 +54,3 @@ with open('index.html', 'w', encoding="utf8") as file:
 
 server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
 server.serve_forever()
-
-
-if __name__ == '__main__':
-    main()
