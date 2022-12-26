@@ -6,7 +6,7 @@ import pandas
 import collections
 
 
-file_path = 'wine3.xlsx'
+file_path = 'wine.xlsx'
 
 env = Environment(
     loader=FileSystemLoader('.'),

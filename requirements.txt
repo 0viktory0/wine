@@ -1,0 +1,4 @@
+Jinja2==3.*
+pandas==1.*
+openpyxl==3.*
+
