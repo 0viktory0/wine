@@ -1,9 +1,12 @@
+import argparse
+import collections
+import datetime
+from dotenv import load_dotenv
+import os
+import pandas
+
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-
-import datetime
-import pandas
-import collections
 
 
 def define_data():
@@ -33,24 +36,29 @@ def get_inf_wine_file(file_path):
     return wine_card
 
 
-
 if __name__ == '__main__':
+    load_dotenv()
+    parser = argparse.ArgumentParser(description='Сайт винодельни',)
+    parser.add_argument('file_path',
+                        nargs='?',
+                        default=os.environ['file_path'],
+                        help='Введите путь до файла с таблицей')
 
-file_path = 'wine.xlsx'
-DATE_OF_FOUNDATION = 1920
+    file_path = parser.parse_args().file_path
+    DATE_OF_FOUNDATION = 1920
 
-env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml']))
-template = env.get_template('template.html')
+    env = Environment(
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml']))
+    template = env.get_template('template.html')
 
-rendered_page = template.render(
-    time_passed=write_years(define_data()),
-    wine_table=get_inf_wine_file(file_path),)
+    rendered_page = template.render(
+        time_passed=write_years(define_data()),
+        wine_table=get_inf_wine_file(file_path),)
 
 
-with open('index.html', 'w', encoding="utf8") as file:
-    file.write(rendered_page)
+    with open('index.html', 'w', encoding="utf8") as file:
+         file.write(rendered_page)
 
-server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-server.serve_forever()
+    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
