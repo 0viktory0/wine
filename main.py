@@ -9,10 +9,10 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
-def define_data():
+def define_date():
     now = datetime.date.today()
-    age_of_the_winery = now.year - DATE_OF_FOUNDATION
-    return age_of_the_winery
+    winery_age = now.year - foundation_date
+    return winery_age
 
 
 def write_years(num):
@@ -45,7 +45,7 @@ if __name__ == '__main__':
                         help='Введите путь до файла с таблицей')
 
     file_path = parser.parse_args().file_path
-    DATE_OF_FOUNDATION = 1920
+    foundation_date = 1920
 
     env = Environment(
         loader=FileSystemLoader('.'),
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     template = env.get_template('template.html')
 
     rendered_page = template.render(
-        time_passed=write_years(define_data()),
+        time_passed=write_years(define_date()),
         wine_table=get_inf_wine_file(file_path),)
 
 
