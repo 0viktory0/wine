@@ -44,12 +44,13 @@ def get_inf_wine_file(file_path):
 if __name__ == '__main__':
     load_dotenv()
     parser = argparse.ArgumentParser(description='Сайт винодельни',)
-    parser.add_argument('file_path',
-                        nargs='?',
-                        default=os.environ['file_path'],
+    parser.add_argument('--file_path',
+                        type=str,
+                        default=os.getenv('file_path'),
                         help='Введите путь до файла с таблицей')
+    args = parser.parse_args()
+    file_path = args.file_path
 
-    file_path = parser.parse_args().file_path
     foundation_date = 1920
 
     env = Environment(
