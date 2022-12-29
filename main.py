@@ -16,14 +16,19 @@ def define_date():
 
 
 def write_years(num):
-    year_string = 'лет'
+    if num < 0:
+        return ''
+    if num % 10 == 0:
+        return
+    if num % 10 == 1:
+        return 'год'
+    if num % 10 in (2, 3, 4):
+        return 'года'
+    return 'лет'
 
-    if str(num)[-2:-1] != '1':
-        if str(num)[-1] == '1':
-            year_string = 'год'
-        if str(num)[-1] == '2' or str(num)[-1] == '3' or str(num)[-1] == '4':
-            year_string = 'года'
-    return f'{num} {year_string}'
+
+def format_year(num):
+    return f'{num} {write_years(num)}'
 
 
 def get_inf_wine_file(file_path):
@@ -53,7 +58,7 @@ if __name__ == '__main__':
     template = env.get_template('template.html')
 
     rendered_page = template.render(
-        time_passed=write_years(define_date()),
+        time_passed=format_year(define_date()),
         wine_table=get_inf_wine_file(file_path),)
 
 
