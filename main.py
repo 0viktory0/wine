@@ -9,26 +9,22 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
-def define_date():
+def get_age_winery(foundation_date):
     now = datetime.date.today()
     winery_age = now.year - foundation_date
     return winery_age
 
 
-def write_years(num):
-    if num < 0:
+def write_years(winery_age):
+    if winery_age < 0:
         return ''
-    if num % 10 == 0:
+    if winery_age % 10 == 0:
         return
-    if num % 10 == 1:
-        return 'год'
-    if num % 10 in (2, 3, 4):
-        return 'года'
-    return 'лет'
-
-
-def format_year(num):
-    return f'{num} {write_years(num)}'
+    if winery_age % 10 == 1:
+        return f'{winery_age} год'
+    if winery_age % 10 in (2, 3, 4):
+        return f'{winery_age} года'
+    return f'{winery_age} лет'
 
 
 def get_inf_wine_file(file_path):
@@ -59,7 +55,7 @@ if __name__ == '__main__':
     template = env.get_template('template.html')
 
     rendered_page = template.render(
-        time_passed=format_year(define_date()),
+        time_passed=write_years(get_age_winery(foundation_date)),
         wine_table=get_inf_wine_file(file_path),)
 
 
